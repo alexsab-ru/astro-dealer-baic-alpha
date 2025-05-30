@@ -7,6 +7,7 @@ import Button from '@/components/Button/Button.astro';
 import Input from '@/components/Input.astro';
 import Checkbox from '@/components/Checkbox/Checkbox.astro';
 import FormSelect from '@/components/FormSelect.astro';
+import PageTitle from '@/components/PageTitle/Index.astro';
 import ChoosingDealerSelect from '@/components/ChoosingDealerSelect/ChoosingDealerSelect.astro';
 import salonsData from '@/data/salons.json';
 import type { ISalon } from '@/types/ISalon';
@@ -22,7 +23,7 @@ const options = models.filter(m => {
 <Layout title={`Запись на сервис ${brand}`} description={`Запись на сервис автомобилей ${brand} в ${legal_city_where}`}>
 	<div class="container py-10 space-y-10">
 		<div>
-			<h1 class="text-3xl sm:text-4xl font-bold text-center">Записаться на сервис {brand}</h1>
+			<PageTitle title={`Записаться на сервис ${brand}`} classes="text-3xl sm:text-4xl font-bold text-center" />
 			<p class="text-center mt-1 text-gray-500">Профессиональное обслуживание с сохранением гарантии</p>
 		</div>
 		<form class="flex flex-col gap-4 max-w-[500px] mx-auto">

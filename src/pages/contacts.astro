@@ -9,6 +9,7 @@ import settings from '@/data/settings.json';
 const { site_name, legal_entity, legal_inn, yandex_widget_orgnization } = settings;
 import salonsData from '@/data/salons.json';
 import type { ISalon } from '@/types/ISalon';
+import PageTitle from '@/components/PageTitle/Index.astro';
 const salons = salonsData.filter((salon: ISalon) => !salon?.type || salon?.type.includes('contact_page'));
 const salon = salons.length > 0 ? salons[0] : null;
 let workers = [];
@@ -21,7 +22,7 @@ salons.map(salon => salon?.workers && salon?.workers.length && salon.workers.map
 			<div class="flex flex-col md:flex-row pb-[400px] md:pb-0">
 
 				<div class="md:w-2/5 py-10">
-					<h1 class="text-3xl sm:text-4xl font-bold">Контакты</h1>
+					<PageTitle title="Контакты" classes="text-3xl sm:text-4xl font-bold" />
 					{legal_entity ? (
 						<div class="flex flex-wrap gap-y-5 sm:gap-y-8 mt-10">
 							{legal_entity && (<InfoItem class="w-full flex items-center gap-2.5" label="Юридическое лицо" value={legal_entity} iconName="mdi:bank" />)}
