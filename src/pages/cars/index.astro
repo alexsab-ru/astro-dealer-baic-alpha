@@ -1,0 +1,46 @@
+---
+import { isRouteDisabled, SITE_NOT_FOUND_PATH } from '@/js/utils/siteRoutes';
+if (isRouteDisabled('/cars/')) {
+	return Astro.rewrite(SITE_NOT_FOUND_PATH);
+}
+import CarsListLayout from "@/layouts/CarsListLayout.astro";
+import { getSafeCollection } from '@/js/utils/safeContent';
+import settings from '@/data/site/settings.json';
+const { site_name, brand, legal_city_where } = settings;
+import CarsList from '@/blocks/cars/CarsList.astro';
+import SeoText from '@/blocks/seo-text/SeoText.astro';
+import { filterVisibleCars } from '@/js/utils/car';
+const rawCars = await getSafeCollection("cars");
+let cars: any, image: string;
+import { getRandomInt } from "@/js/utils/numbers.format";
+if (rawCars && rawCars.length > 0) {
+	cars = filterVisibleCars(rawCars);
+	// Проверяем что есть автомобили после фильтрации и что у них есть данные
+	if (cars.length > 0 && cars[0]?.data) {
+		image = cars[getRandomInt(0, cars.length)].data.image;
+	} else {
+		image = "";
+	}
+} else {
+	image = "";
+}
+export const breadcrumb = { name: "Авто в наличии", href: "/cars/" };
+---
+
+<CarsListLayout
+	h1={`Автомобили ${brand} в наличии в ${legal_city_where}`}
+	title={`Автомобили в наличии | ${site_name}`}
+	description={`Автомобили ${brand} в наличии в ${legal_city_where} у официального дилера. Уточняйте комплектации, цены и сроки, записывайтесь на тест-драйв онлайн или по телефону.`}
+	breadcrumb={[breadcrumb]}
+	image={image ? image : ""}
+	backLink={true}
+>
+	{
+		cars?.length ? (
+			<CarsList cars={cars} collection="cars" path="/cars/" />
+		) : (
+			<p>Скоро здесь появится список новых автомобилей.</p>
+		)
+	}
+	<SeoText mdx="cars" noPadding />
+</CarsListLayout>
